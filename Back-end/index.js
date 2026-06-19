@@ -11,9 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect(
-    "mongodb+srv://rogerdahianclash:Sp7OoHbSbfoq1nkl@cluster0.wm18ozb.mongodb.net/Usuarios?appName=Cluster0",
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => console.log("Conectado ao banco de dados Mongo"))
   .catch((error) => console.log("Erro ao conectar ao Mongo: ", error));
 
@@ -47,6 +45,5 @@ app.delete("/usuarios/:id", async (req, res) => {
   res.status(200).json({ message: "Usuário deletado" });
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
