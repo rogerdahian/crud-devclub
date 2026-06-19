@@ -42,7 +42,7 @@ app.post("/usuarios", async (req, res) => {
 
 app.delete("/usuarios/:id", async (req, res) => {
   await Usuario.findByIdAndDelete(req.params.id);
-  res.status(200).json({ message: "Usuário deletado!" });
+  res.status(200).json({ message: "Usuário deletado" });
 });
 
 const PORT = process.env.PORT || 3000;
