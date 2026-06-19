@@ -3,44 +3,36 @@ import { useState, useEffect } from "react";
 import UserCard from "./components/UserCard";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 function App() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    async function buscarUsuarios() {
-      const resposta = await axios.get("http://localhost:3000/usuarios");
-      const normalized = resposta.data.map((u) => ({
-        ...u,
-        name: u.nome,
-        age: u.idade,
-      }));
-      setUsers(normalized);
-    }
+  async function buscarUsuarios() {
+    const resposta = await axios.get(`${API_URL}/usuarios`);
+    const normalized = resposta.data.map((u) => ({
+      ...u,
+      name: u.nome,
+      age: u.idade,
+    }));
+    setUsers(normalized);
+  }
 
+  useEffect(() => {
     buscarUsuarios();
   }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    await axios.post("http://localhost:3000/usuarios", {
-      // send the payload in the shape the API expects
+    await axios.post(`${API_URL}/usuarios`, {
       nome: name,
       email: email,
       idade: age,
     });
-    async function buscarUsuarios() {
-      const resposta = await axios.get("http://localhost:3000/usuarios");
-      const normalized = resposta.data.map((u) => ({
-        ...u,
-        name: u.nome,
-        age: u.idade,
-      }));
-      setUsers(normalized);
-    }
 
     buscarUsuarios();
 
@@ -50,7 +42,7 @@ function App() {
   }
 
   async function deleteUser(id) {
-    await axios.delete(`http://localhost:3000/usuarios/${id}`);
+    await axios.delete(`${API_URL}/usuarios/${id}`);
     const newUsers = users.filter((user) => user._id !== id);
     setUsers(newUsers);
   }
